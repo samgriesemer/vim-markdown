@@ -61,11 +61,12 @@ execute 'syn region htmlBold matchgroup=mkdBold start="\%(^\|\s\)\zs__\ze\S" end
 execute 'syn region htmlBoldItalic matchgroup=mkdBoldItalic start="\%(^\|\s\)\zs\*\*\*\ze\S" end="\S\zs\*\*\*" keepend contains=@Spell' . s:oneline . s:concealends
 execute 'syn region htmlBoldItalic matchgroup=mkdBoldItalic start="\%(^\|\s\)\zs___\ze\S" end="\S\zs___" keepend contains=@Spell' . s:oneline . s:concealends
 
-" [link](URL) | [link][id] | [link][] | ![image](URL)
+" [link](URL) | [link][id] | [link][] | ![image](URL) | [[link]]
 syn region mkdFootnotes matchgroup=mkdDelimiter start="\[^"    end="\]"
 execute 'syn region mkdID matchgroup=mkdDelimiter    start="\["    end="\]" contained oneline' . s:conceal
 execute 'syn region mkdURL matchgroup=mkdDelimiter   start="("     end=")"  contained oneline' . s:conceal
 execute 'syn region mkdLink matchgroup=mkdDelimiter  start="\\\@<!!\?\[\ze[^]\n]*\n\?[^]\n]*\][[(]" end="\]" contains=@mkdNonListItem,@Spell nextgroup=mkdURL,mkdID skipwhite' . s:concealends
+execute 'syn region mkdWikiLink matchgroup=mkdDelimiter start="\[\["   end="\]\]" contained oneline' . s:conceal
 
 " Autolink without angle brackets.
 " mkd  inline links:      protocol     optional  user:pass@  sub/domain                    .com, .co.uk, etc         optional port   path/querystring/hash fragment
@@ -85,8 +86,11 @@ syn region mkdLinkTitle matchgroup=mkdDelimiter start=+"+     end=+"+  contained
 syn region mkdLinkTitle matchgroup=mkdDelimiter start=+'+     end=+'+  contained
 syn region mkdLinkTitle matchgroup=mkdDelimiter start=+(+     end=+)+  contained
 
+" Tag
+syn match  mkdTag       /#[a-z-]\+\>/
+
 "HTML headings
-syn region htmlH1       matchgroup=mkdHeading     start="^\s*#"                   end="$" contains=mkdLink,mkdInlineURL,@Spell
+syn region htmlH1       matchgroup=mkdHeading     start="^\s*# "                  end="$" contains=mkdLink,mkdInlineURL,@Spell
 syn region htmlH2       matchgroup=mkdHeading     start="^\s*##"                  end="$" contains=mkdLink,mkdInlineURL,@Spell
 syn region htmlH3       matchgroup=mkdHeading     start="^\s*###"                 end="$" contains=mkdLink,mkdInlineURL,@Spell
 syn region htmlH4       matchgroup=mkdHeading     start="^\s*####"                end="$" contains=mkdLink,mkdInlineURL,@Spell
@@ -155,9 +159,10 @@ if get(g:, 'vim_markdown_strikethrough', 0)
     HtmlHiLink mkdStrike        htmlStrike
 endif
 
-syn cluster mkdNonListItem contains=@htmlTop,htmlItalic,htmlBold,htmlBoldItalic,mkdFootnotes,mkdInlineURL,mkdLink,mkdLinkDef,mkdLineBreak,mkdBlockquote,mkdCode,mkdRule,htmlH1,htmlH2,htmlH3,htmlH4,htmlH5,htmlH6,mkdMath,mkdStrike
+syn cluster mkdNonListItem contains=@htmlTop,htmlItalic,htmlBold,htmlBoldItalic,mkdFootnotes,mkdInlineURL,mkdLink,mkdLinkDef,mkdLineBreak,mkdBlockquote,mkdCode,mkdRule,htmlH1,htmlH2,htmlH3,htmlH4,htmlH5,htmlH6,mkdMath,mkdStrike,mkdWikiLink,mkdTag
 
 "highlighting for Markdown groups
+HtmlHiLink mkdTag           String
 HtmlHiLink mkdString        String
 HtmlHiLink mkdCode          String
 HtmlHiLink mkdCodeDelimiter String
@@ -170,6 +175,7 @@ HtmlHiLink mkdRule          Identifier
 HtmlHiLink mkdLineBreak     Visual
 HtmlHiLink mkdFootnotes     htmlLink
 HtmlHiLink mkdLink          htmlLink
+HtmlHiLink mkdWikiLink      htmlLink
 HtmlHiLink mkdURL           htmlString
 HtmlHiLink mkdInlineURL     htmlLink
 HtmlHiLink mkdID            Identifier
