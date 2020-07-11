@@ -90,18 +90,18 @@ syn region mkdLinkTitle matchgroup=mkdDelimiter start=+(+     end=+)+  contained
 syn match  mkdTag       /#[a-z-]\+\>/
 
 "HTML headings
-syn region htmlH1       matchgroup=mkdHeading     start="^\s*# "                  end="$" contains=mkdLink,mkdInlineURL,@Spell
-syn region htmlH2       matchgroup=mkdHeading     start="^\s*##"                  end="$" contains=mkdLink,mkdInlineURL,@Spell
-syn region htmlH3       matchgroup=mkdHeading     start="^\s*###"                 end="$" contains=mkdLink,mkdInlineURL,@Spell
-syn region htmlH4       matchgroup=mkdHeading     start="^\s*####"                end="$" contains=mkdLink,mkdInlineURL,@Spell
-syn region htmlH5       matchgroup=mkdHeading     start="^\s*#####"               end="$" contains=mkdLink,mkdInlineURL,@Spell
-syn region htmlH6       matchgroup=mkdHeading     start="^\s*######"              end="$" contains=mkdLink,mkdInlineURL,@Spell
-syn match  htmlH1       /^.\+\n=\+$/ contains=mkdLink,mkdInlineURL,@Spell
-syn match  htmlH2       /^.\+\n-\+$/ contains=mkdLink,mkdInlineURL,@Spell
+syn region htmlH1       matchgroup=mkdHeading     start="^\s*# "                  end="$" contains=mkdLink,mkdWikiLink,mkdInlineURL,@Spell
+syn region htmlH2       matchgroup=mkdHeading     start="^\s*##"                  end="$" contains=mkdLink,mkdWikiLink,mkdInlineURL,@Spell
+syn region htmlH3       matchgroup=mkdHeading     start="^\s*###"                 end="$" contains=mkdLink,mkdWikiLink,mkdInlineURL,@Spell
+syn region htmlH4       matchgroup=mkdHeading     start="^\s*####"                end="$" contains=mkdLink,mkdWikiLink,mkdInlineURL,@Spell
+syn region htmlH5       matchgroup=mkdHeading     start="^\s*#####"               end="$" contains=mkdLink,mkdWikiLink,mkdInlineURL,@Spell
+syn region htmlH6       matchgroup=mkdHeading     start="^\s*######"              end="$" contains=mkdLink,mkdWikiLink,mkdInlineURL,@Spell
+syn match  htmlH1       /^.\+\n=\+$/ contains=mkdLink,mkdWikiLink,mkdInlineURL,@Spell
+syn match  htmlH2       /^.\+\n-\+$/ contains=mkdLink,mkdWikiLink,mkdInlineURL,@Spell
 
 "define Markdown groups
 syn match  mkdLineBreak    /  \+$/
-syn region mkdBlockquote   start=/^\s*>/                   end=/$/ contains=mkdLink,mkdInlineURL,mkdLineBreak,@Spell
+syn region mkdBlockquote   start=/^\s*>/                   end=/$/ contains=mkdLink,mkdWikiLink,mkdInlineURL,mkdLineBreak,@Spell
 execute 'syn region mkdCode matchgroup=mkdCodeDelimiter start=/\(\([^\\]\|^\)\\\)\@<!`/                     end=/`/'  . s:concealcode
 execute 'syn region mkdCode matchgroup=mkdCodeDelimiter start=/\(\([^\\]\|^\)\\\)\@<!``/ skip=/[^`]`[^`]/   end=/``/' . s:concealcode
 execute 'syn region mkdCode matchgroup=mkdCodeDelimiter start=/^\s*\z(`\{3,}\)[^`]*$/                       end=/^\s*\z1`*\s*$/'            . s:concealcode
